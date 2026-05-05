@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Zero API</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Zero API">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono&display=swap');
+
+        :root {
+            --bg: #0f172a;
+            --card: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            background-attachment: fixed;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: env(safe-area-inset-top, 0px);
+        }
+
+        .api-card {
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .api-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        .api-card:active {
+            transform: scale(0.97);
+        }
+
+        .category-pill {
+            transition: all 0.25s;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .category-pill.active {
+            background: #6366f1;
+            border-color: #6366f1;
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .category-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .category-pill.active:hover {
+            background: #4f46e5;
+        }
+
+        .auth-input {
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .auth-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .auth-input::placeholder {
+            color: #64748b;
+        }
+
+        .auth-tab {
+            transition: all 0.3s;
+            position: relative;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        .auth-tab.active {
+            color: white;
+            font-weight: 800;
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            border-radius: 10px;
+        }
+
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+            background: #0a0f1a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.4s ease forwards;
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-animate {
+            animation: modalPop 0.3s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+
+        /* Install prompt */
+        .install-banner {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+
+        /* Pulse */
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.4;
+            }
+        }
+        .pulse-dot {
+            animation: pulse-dot 2s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== INSTALL BANNER ==================== -->
+    <div id="install-banner" class="hidden install-banner px-4 py-3 flex items-center justify-between text-sm sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-download text-lg"></i>
+            <span class="font-bold">Install aplikasi ini</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="installApp()" class="bg-white text-indigo-600 px-4 py-1.5 rounded-full font-bold text-xs active:scale-95 transition">Install</button>
+            <button onclick="hideInstallBanner()" class="text-white/70 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== AUTH SCREEN ==================== -->
+    <div id="auth-screen" class="min-h-screen flex flex-col items-center justify-center p-6">
+        <div class="max-w-md w-full animate-in">
+            <!-- Logo -->
+            <div class="text-center mb-10">
+                <div class="w-24 h-24 mx-auto rounded-3xl flex items-center justify-center mb-6 shadow-2xl relative"
+                style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+                <i class="fas fa-bolt text-white text-4xl"></i>
+                <div class="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-4 border-slate-900 flex items-center justify-center pulse-dot">
+                    <i class="fas fa-check text-white text-[8px]"></i>
+                </div>
+            </div>
+            <h1 class="text-3xl font-extrabold text-white">Zero API</h1>
+            <p class="text-slate-400 mt-2 text-sm">Gerbang API tercepat untuk para pengembang masa depan.</p>
+        </div>
+
+        <!-- Auth Tabs -->
+        <div class="flex border-b border-white/10 mb-8">
+            <button onclick="switchAuthTab('login')" id="tab-login" class="auth-tab active flex-1 pb-3 font-bold text-sm transition">Masuk</button>
+            <button onclick="switchAuthTab('register')" id="tab-register" class="auth-tab flex-1 pb-3 font-bold text-sm transition">Daftar</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="form-login">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Email</label>
+                    <input id="login-email" type="email" placeholder="admin567@gmail.com" class="auth-input w-full px-5 py-3.5 rounded-xl text-sm font-medium">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Password</label>
+                    <div class="relative">
+                        <input id="login-password" type="password" placeholder="••••••••" class="auth-input w-full px-5 py-3.5 rounded-xl text-sm font-medium pr-12">
+                        <button onclick="togglePass('login-password', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold hover:bg-indigo-700 transition-all active:scale-95">
+                    <i class="fas fa-right-to-bracket mr-2"></i> Masuk ke Dashboard
+                </button>
+            </div>
+            <div class="mt-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl">
+                <p class="text-xs text-slate-400 text-center">
+                    <i class="fas fa-crown text-amber-400 mr-1"></i>
+                    Admin: <span class="font-bold text-white">admin567@gmail.com</span> / <span class="font-bold text-white">onez9182</span>
+                </p>
+                <p class="text-xs text-slate-500 text-center mt-1">
+                    Demo: <span class="font-bold text-slate-300">demo@zero.api</span> / <span class="font-bold text-slate-300">demo123</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="form-register" class="hidden">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Nama Lengkap</label>
+                    <input id="reg-name" type="text" placeholder="John Doe" class="auth-input w-full px-5 py-3.5 rounded-xl text-sm font-medium">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Email</label>
+                    <input id="reg-email" type="email" placeholder="developer@zerohub.io" class="auth-input w-full px-5 py-3.5 rounded-xl text-sm font-medium">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Password</label>
+                    <div class="relative">
+                        <input id="reg-password" type="password" placeholder="Minimal 6 karakter" class="auth-input w-full px-5 py-3.5 rounded-xl text-sm font-medium pr-12">
+                        <button onclick="togglePass('reg-password', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">Konfirmasi Password</label>
+                    <input id="reg-confirm" type="password" placeholder="Ulangi password" class="auth-input w-full px-5 py-3.5 rounded-xl text-sm font-medium">
+                </div>
+                <button onclick="handleRegister()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold hover:bg-emerald-700 transition-all active:scale-95">
+                    <i class="fas fa-user-plus mr-2"></i> Daftar Akun Baru
+                </button>
+            </div>
+        </div>
+
+        <!-- Error -->
+        <div id="auth-error" class="hidden mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3">
+            <i class="fas fa-circle-exclamation text-red-400"></i>
+            <span id="auth-error-text" class="text-sm font-medium text-red-400"></span>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== DASHBOARD ==================== -->
+<div id="dashboard" class="hidden min-h-screen pb-20">
+    <!-- Navbar -->
+    <nav class="glass-nav sticky top-0 z-40 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg"
+            style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+            <i class="fas fa-bolt"></i>
+        </div>
+        <div>
+            <span class="font-black text-lg text-white">Zero API</span>
+            <div class="flex items-center gap-1">
+                <span class="w-1.5 h-1.5 bg-green-400 rounded-full pulse-dot"></span>
+                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Online</span>
+            </div>
+        </div>
+    </div>
+    <div class="flex items-center gap-3">
+        <span id="admin-badge" class="hidden px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-[10px] font-bold border border-amber-500/30">ADMIN</span>
+        <div class="text-right hidden md:block">
+            <p class="text-xs font-bold text-white" id="username-display">Developer</p>
+            <p class="text-[10px] text-indigo-400 font-medium">Free Tier</p>
+        </div>
+        <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold cursor-pointer active:scale-90 transition" onclick="logout()" id="nav-avatar">D</div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<header class="px-4 py-8">
+    <h2 class="text-3xl font-extrabold text-white mb-2">Eksplorasi <span class="text-indigo-400">API</span></h2>
+    <p class="text-slate-400 text-sm mb-6">Pilih dari 50+ layanan API berkualitas tinggi.</p>
+    <div class="flex gap-2 overflow-x-auto pb-2" id="category-list">
+        <button onclick="filterApi('all')" class="category-pill active px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap">Semua</button>
+    </div>
+</header>
+
+<!-- Stats -->
+<div class="px-4 -mt-2">
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-wrap gap-6 items-center justify-center">
+        <div class="text-center">
+            <p class="text-[10px] text-slate-500 font-bold uppercase">API</p>
+            <p class="text-white font-bold text-lg" id="total-services">0</p>
+        </div>
+        <div class="text-center">
+            <p class="text-[10px] text-slate-500 font-bold uppercase">Keys</p>
+            <p class="text-white font-bold text-lg" id="key-count">0</p>
+        </div>
+        <div class="text-center">
+            <p class="text-[10px] text-slate-500 font-bold uppercase">Users</p>
+            <p class="text-white font-bold text-lg" id="stat-users">0</p>
+        </div>
+    </div>
+</div>
+
+<!-- API Grid -->
+<div class="px-4 mt-6">
+    <div id="api-container" class="grid grid-cols-2 lg:grid-cols-4 gap-3"></div>
+</div>
+</div>
+
+<!-- ==================== API DETAIL MODAL ==================== -->
+<div id="api-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
+    <div class="bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl modal-animate max-h-[85vh] flex flex-col border border-white/10">
+        <div class="p-5 border-b border-white/10 flex items-center justify-between">
+            <h3 id="modal-name" class="font-black text-lg text-white">API Name</h3>
+            <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
+                <i class="fas fa-times text-white text-sm"></i>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-5 space-y-4">
+            <div id="modal-icon-box" class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl text-white shadow-lg mb-2"></div>
+            <p id="modal-desc" class="text-slate-400 text-sm"></p>
+            <div>
+                <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">Endpoint</label>
+                <code id="modal-endpoint" class="text-xs text-indigo-400 font-mono bg-white/5 px-3 py-2 rounded-lg block"></code>
+            </div>
+            <div id="gen-action">
+                <button onclick="generateKey()" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition active:scale-95">
+                    <i class="fas fa-plus mr-2"></i> Buat API Key
+                </button>
+            </div>
+            <div id="key-result" class="hidden">
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">API KEY</p>
+                <div class="flex gap-2">
+                    <input id="key-input" type="text" readonly class="flex-1 bg-white/5 border border-white/10 px-3 py-3 rounded-xl font-mono text-xs text-indigo-400">
+                    <button onclick="copyKey()" class="bg-indigo-600/20 text-indigo-400 px-4 rounded-xl hover:bg-indigo-600/30 transition active:scale-90">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== TOAST ==================== -->
+<div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] translate-y-32 transition-all duration-500 bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-white/10">
+    <i id="toast-icon" class="fas fa-check-circle text-green-400"></i>
+    <span id="toast-text" class="text-sm font-bold"></span>
+</div>
+
+<!-- ==================== INSTALL TOAST ==================== -->
+<div id="install-toast" class="hidden fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] bg-indigo-600 text-white px-6 py-4 rounded-2xl shadow-2xl text-center">
+    <p class="font-bold text-sm mb-2">📲 Install aplikasi ini!</p>
+    <p class="text-xs text-indigo-200 mb-3">Tekan titik tiga <strong>⋮</strong> → "Tambahkan ke Layar Utama"</p>
+    <button onclick="document.getElementById('install-toast').classList.add('hidden')" class="bg-white text-indigo-600 px-4 py-1.5 rounded-full text-xs font-bold">OK</button>
+</div>
+
+<script>
+    // ==================== PWA - SERVICE WORKER ====================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            const swCode = `
+                const CACHE = 'zero-api-v2';
+                const ASSETS = ['./', './index.html', './manifest.json'];
+                self.addEventListener('install', e => {
+                    e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+                    self.skipWaiting();
+                });
+                self.addEventListener('activate', e => {
+                    e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))));
+                    self.clients.claim();
+                });
+                self.addEventListener('fetch', e => {
+                    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).catch(() => new Response('Offline', {status:503}))));
+                });
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob))
+                .then(() => console.log('✅ SW registered'))
+                .catch(() => console.log('SW gagal'));
+        });
+    }
+
+    // ==================== INSTALL PROMPT ====================
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        document.getElementById('install-banner').classList.remove('hidden');
+        setTimeout(() => {
+            document.getElementById('install-toast').classList.remove('hidden');
+            setTimeout(() => document.getElementById('install-toast').classList.add('hidden'), 8000);
+        }, 5000);
+    });
+
+    window.addEventListener('appinstalled', () => {
+        document.getElementById('install-banner').classList.add('hidden');
+        document.getElementById('install-toast').classList.add('hidden');
+        showToast('Aplikasi terinstall! 🎉', 'fa-check-circle', 'text-green-400');
+    });
+
+    function installApp() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(() => {
+                deferredPrompt = null;
+                document.getElementById('install-banner').classList.add('hidden');
+            });
+        } else {
+            document.getElementById('install-toast').classList.remove('hidden');
+            setTimeout(() => document.getElementById('install-toast').classList.add('hidden'), 5000);
+        }
+    }
+
+    function hideInstallBanner() {
+        document.getElementById('install-banner').classList.add('hidden');
+    }
+
+    // ==================== DATABASE ====================
+    const ADMIN_EMAIL = 'admin567@gmail.com';
+    const ADMIN_PASSWORD = 'onez9182';
+    const ADMIN_NAME = 'Zero One';
+
+    let usersDB = JSON.parse(localStorage.getItem('zero_users') || '[]');
+    let apisDB = JSON.parse(localStorage.getItem('zero_apis') || 'null');
+    let categoriesDB = JSON.parse(localStorage.getItem('zero_categories') || 'null');
+    let currentUser = JSON.parse(localStorage.getItem('zero_current_user') || 'null');
+    let keysGenerated = parseInt(localStorage.getItem('zero_keys') || '0');
+
+    const defaultCategories = ['AI', 'Downloader', 'Social', 'Tools', 'Game', 'Search', 'Finance'];
+    if (!categoriesDB) {
+        categoriesDB = defaultCategories;
+        localStorage.setItem('zero_categories', JSON.stringify(categoriesDB));
+    }
+
+    if (usersDB.length === 0) {
+        usersDB = [
+            { name: ADMIN_NAME, email: ADMIN_EMAIL, password: ADMIN_PASSWORD, role: 'admin', createdAt: new Date().toISOString() },
+            { name: 'Demo User', email: 'demo@zero.api', password: 'demo123', role: 'user', createdAt: new Date().toISOString() },
+        ];
+        localStorage.setItem('zero_users', JSON.stringify(usersDB));
+    }
+
+    const defaultApis = [
+        { id: 'gemini', name: 'Gemini AI', cat: 'AI', icon: 'fa-brain', color: 'from-blue-600 to-cyan-500', endpoint: '/ai/gemini', param: 'text', desc: 'LLM paling pintar dari Google untuk chatbot.' },
+        { id: 'chatgpt', name: 'ChatGPT-4', cat: 'AI', icon: 'fa-robot', color: 'from-emerald-600 to-teal-500', endpoint: '/ai/chatgpt', param: 'prompt', desc: 'API ChatGPT resmi untuk chatbot cerdas.' },
+        { id: 'deepseek', name: 'DeepSeek Pro', cat: 'AI', icon: 'fa-microchip', color: 'from-indigo-700 to-purple-600', endpoint: '/ai/deepseek', param: 'q', desc: 'AI tingkat lanjut untuk riset mendalam.' },
+        { id: 'tiktok', name: 'TikTok DL', cat: 'Downloader', icon: 'fa-music', color: 'from-gray-900 to-black', endpoint: '/dl/tiktok', param: 'url', desc: 'Download video TikTok tanpa watermark HD.' },
+        { id: 'youtube', name: 'YouTube DL', cat: 'Downloader', icon: 'fa-play-circle', color: 'from-red-600 to-rose-500', endpoint: '/dl/youtube', param: 'url', desc: 'Konversi YouTube ke MP3/MP4 hingga 4K.' },
+        { id: 'ig', name: 'IG Downloader', cat: 'Downloader', icon: 'fa-instagram', color: 'from-yellow-500 to-purple-600', endpoint: '/dl/instagram', param: 'url', desc: 'Download Reel, Foto, Story Instagram.' },
+        { id: 'igstalk', name: 'IG Stalker', cat: 'Social', icon: 'fa-user-secret', color: 'from-fuchsia-600 to-pink-500', endpoint: '/stalk/ig', param: 'username', desc: 'Info profil lengkap Instagram.' },
+        { id: 'weather', name: 'Weather API', cat: 'Tools', icon: 'fa-cloud-sun', color: 'from-sky-500 to-blue-400', endpoint: '/tool/weather', param: 'city', desc: 'Data cuaca real-time seluruh kota.' },
+    ];
+
+    if (!apisDB) {
+        apisDB = defaultApis;
+        localStorage.setItem('zero_apis', JSON.stringify(apisDB));
+    }
+
+    let selectedApi = null;
+
+    // ==================== AUTH ====================
+    function switchAuthTab(tab) {
+        document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+        document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+        document.getElementById('form-login').classList.toggle('hidden', tab !== 'login');
+        document.getElementById('form-register').classList.toggle('hidden', tab !== 'register');
+        hideError();
+    }
+
+    function togglePass(inputId, btn) {
+        const input = document.getElementById(inputId);
+        input.type = input.type === 'password' ? 'text' : 'password';
+        btn.querySelector('i').classList.toggle('fa-eye', input.type === 'password');
+        btn.querySelector('i').classList.toggle('fa-eye-slash', input.type === 'text');
+    }
+
+    function showError(msg) {
+        document.getElementById('auth-error-text').innerText = msg;
+        document.getElementById('auth-error').classList.remove('hidden');
+    }
+
+    function hideError() { document.getElementById('auth-error').classList.add('hidden'); }
+
+    function handleLogin() {
+        hideError();
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value.trim();
+        if (!email || !password) return showError('Email dan password wajib diisi!');
+        const users = JSON.parse(localStorage.getItem('zero_users') || '[]');
+        const user = users.find(u => u.email === email && u.password === password);
+        if (!user) return showError('Email atau password salah!');
+        currentUser = user;
+        localStorage.setItem('zero_current_user', JSON.stringify(user));
+        enterDashboard(user);
+    }
+
+    function handleRegister() {
+        hideError();
+        const name = document.getElementById('reg-name').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const password = document.getElementById('reg-password').value.trim();
+        const confirm = document.getElementById('reg-confirm').value.trim();
+        if (!name || !email || !password || !confirm) return showError('Semua field wajib diisi!');
+        if (password.length < 6) return showError('Password minimal 6 karakter!');
+        if (password !== confirm) return showError('Konfirmasi tidak cocok!');
+        const users = JSON.parse(localStorage.getItem('zero_users') || '[]');
+        if (users.find(u => u.email === email)) return showError('Email sudah terdaftar!');
+        const newUser = { name, email, password, role: 'user', createdAt: new Date().toISOString() };
+        users.push(newUser);
+        localStorage.setItem('zero_users', JSON.stringify(users));
+        currentUser = newUser;
+        localStorage.setItem('zero_current_user', JSON.stringify(newUser));
+        showToast('Registrasi berhasil!', 'fa-user-check', 'text-green-400');
+        setTimeout(() => enterDashboard(newUser), 800);
+    }
+
+    function enterDashboard(user) {
+        document.getElementById('auth-screen').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        document.getElementById('username-display').innerText = user.name;
+        if (user.role === 'admin') {
+            document.getElementById('admin-badge').classList.remove('hidden');
+        }
+        document.getElementById('nav-avatar').innerText = (user.name || 'U')[0].toUpperCase();
+        refreshData();
+        renderCategoryTabs();
+        renderCards(apisDB);
+        updateStats();
+    }
+
+    function logout() {
+        if (confirm('Yakin ingin keluar?')) {
+            localStorage.removeItem('zero_current_user');
+            currentUser = null;
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('hidden');
+            switchAuthTab('login');
+            showToast('Logout berhasil!', 'fa-sign-out-alt', 'text-blue-400');
+        }
+    }
+
+    function refreshData() {
+        apisDB = JSON.parse(localStorage.getItem('zero_apis') || '[]');
+        categoriesDB = JSON.parse(localStorage.getItem('zero_categories') || '[]');
+    }
+
+    // ==================== RENDER ====================
+    function renderCategoryTabs() {
+        const cats = ['all', ...categoriesDB];
+        document.getElementById('category-list').innerHTML = cats.map(cat =>
+            `<button onclick="filterApi('${cat}')" class="category-pill px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap ${cat==='all'?'active':''}">${cat==='all'?'Semua API':cat}</button>`
+        ).join('');
+    }
+
+    function renderCards(data) {
+        document.getElementById('api-container').innerHTML = data.length === 0 ?
+            '<div class="col-span-full text-center py-20 text-slate-500"><i class="fas fa-inbox text-4xl mb-3 block"></i><p>Tidak ada API</p></div>' :
+            data.map((api, idx) => `
+                <div onclick="openModal('${api.id}')" class="api-card p-4" style="animation-delay:${idx*0.03}s">
+                    <div class="w-10 h-10 bg-gradient-to-br ${api.color} rounded-xl flex items-center justify-center text-white text-lg mb-3 shadow-lg">
+                        <i class="fas ${api.icon}"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-sm mb-1">${api.name}</h4>
+                    <p class="text-[10px] font-black text-indigo-400 uppercase tracking-widest">${api.cat}</p>
+                </div>
+            `).join('');
+        updateStats();
+    }
+
+    function filterApi(cat) {
+        document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        renderCards(cat === 'all' ? apisDB : apisDB.filter(a => a.cat === cat));
+    }
+
+    function updateStats() {
+        document.getElementById('total-services').innerText = apisDB.length;
+        document.getElementById('key-count').innerText = keysGenerated;
+        document.getElementById('stat-users').innerText = JSON.parse(localStorage.getItem('zero_users') || '[]').length;
+    }
+
+    function openModal(id) {
+        selectedApi = apisDB.find(a => a.id === id);
+        if (!selectedApi) return;
+        document.getElementById('modal-name').innerText = selectedApi.name;
+        document.getElementById('modal-desc').innerText = selectedApi.desc;
+        document.getElementById('modal-icon-box').className = `w-14 h-14 bg-gradient-to-br ${selectedApi.color} rounded-2xl flex items-center justify-center text-2xl text-white shadow-lg mb-2`;
+        document.getElementById('modal-icon-box').innerHTML = `<i class="fas ${selectedApi.icon}"></i>`;
+        document.getElementById('modal-endpoint').innerText = `https://api.zerohub.io/v1${selectedApi.endpoint}`;
+        document.getElementById('gen-action').classList.remove('hidden');
+        document.getElementById('key-result').classList.add('hidden');
+        document.getElementById('api-modal').classList.remove('hidden');
+    }
+
+    function closeModal() { document.getElementById('api-modal').classList.add('hidden'); }
+
+    function generateKey() {
+        const btn = document.querySelector('#gen-action button');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+        setTimeout(() => {
+            document.getElementById('key-input').value = `ZERO-${selectedApi.id.toUpperCase()}-${Math.floor(Math.random()*900000000000000)+100000000000000}`;
+            document.getElementById('gen-action').classList.add('hidden');
+            document.getElementById('key-result').classList.remove('hidden');
+            keysGenerated++;
+            localStorage.setItem('zero_keys', keysGenerated);
+            updateStats();
+            btn.innerHTML = '<i class="fas fa-plus mr-2"></i> Buat API Key';
+            showToast('Key berhasil dibuat!', 'fa-key', 'text-yellow-400');
+        }, 1000);
+    }
+
+    function copyKey() {
+        navigator.clipboard.writeText(document.getElementById('key-input').value);
+        showToast('Key disalin!', 'fa-copy', 'text-blue-400');
+    }
+
+    function showToast(text, icon = 'fa-check-circle', color = 'text-green-400') {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-text').innerText = text;
+        document.getElementById('toast-icon').className = `fas ${icon} ${color}`;
+        toast.style.transform = "translate(-50%, 0)";
+        clearTimeout(toast._t);
+        toast._t = setTimeout(() => toast.style.transform = "translate(-50%, 200%)", 3000);
+    }
+
+    document.getElementById('api-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && document.getElementById('dashboard').classList.contains('hidden')) {
+            document.getElementById('form-login').classList.contains('hidden') ? handleRegister() : handleLogin();
+        }
+    });
+
+    // Init
+    if (currentUser) enterDashboard(currentUser);
+</script>
+</body>
+</html>
