@@ -1,0 +1,24 @@
+{
+  "name": "Zero API",
+  "short_name": "ZeroAPI",
+  "description": "Gerbang API tercepat untuk para pengembang masa depan",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "https://www.image2url.com/r2/default/images/1776661836375-2667b942-f232-4319-8e74-49c037593da5.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://www.image2url.com/r2/default/images/1776661836375-2667b942-f232-4319-8e74-49c037593da5.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
