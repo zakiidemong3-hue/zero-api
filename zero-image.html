@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Image</title>
+<link rel="icon" href="https://www.image2url.com/r2/default/images/1776661836375-2667b942-f232-4319-8e74-49c037593da5.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-primary:#060e1f;
+  --bg-secondary:#0b1a35;
+  --bg-card:rgba(15,30,65,0.65);
+  --bg-glass:rgba(20,40,80,0.45);
+  --bg-input:rgba(10,25,55,0.7);
+  --border-glass:rgba(80,140,255,0.15);
+  --border-active:rgba(80,160,255,0.5);
+  --blue-primary:#3b82f6;
+  --blue-bright:#60a5fa;
+  --blue-glow:#2563eb;
+  --cyan-accent:#06b6d4;
+  --cyan-glow:rgba(6,182,212,0.3);
+  --text-primary:#e8f0ff;
+  --text-secondary:#8ba3c7;
+  --text-muted:#5a7399;
+  --danger:#ef4444;
+  --success:#22c55e;
+  --warning:#f59e0b;
+  --star-active:#fbbf24;
+  --star-inactive:#2d3f5e;
+  --radius-sm:8px;
+  --radius-md:14px;
+  --radius-lg:20px;
+  --radius-xl:28px;
+  --shadow-card:0 8px 32px rgba(0,0,0,0.4),0 0 0 1px var(--border-glass);
+  --shadow-glow:0 0 30px rgba(59,130,246,0.15);
+  --font-display:'Outfit',sans-serif;
+  --font-body:'Source Sans 3',sans-serif;
+  --transition:0.3s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg-primary);
+  color:var(--text-primary);
+  min-height:100vh;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%,rgba(59,130,246,0.08),transparent),
+    radial-gradient(ellipse 60% 50% at 80% 90%,rgba(6,182,212,0.06),transparent),
+    radial-gradient(ellipse 50% 40% at 50% 50%,rgba(37,99,235,0.04),transparent);
+  pointer-events:none;z-index:0;
+}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-display);font-weight:700;letter-spacing:-0.02em}
+a{color:var(--blue-bright);text-decoration:none}
+button{
+  font-family:var(--font-body);cursor:pointer;border:none;outline:none;
+  transition:var(--transition);
+}
+input,textarea,select{
+  font-family:var(--font-body);outline:none;border:none;
+  transition:var(--transition);
+}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg-primary)}
+::-webkit-scrollbar-thumb{background:var(--blue-primary);border-radius:3px}
+
+/* ========= NOISE OVERLAY ========= */
+body::after{
+  content:'';position:fixed;inset:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.5;
+}
+
+/* ========= NAV ========= */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(6,14,31,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border-glass);
+  padding:0 24px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-brand{display:flex;align-items:center;gap:12px}
+.nav-brand img{width:36px;height:36px;border-radius:50%;object-fit:cover}
+.nav-brand h1{font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,var(--blue-bright),var(--cyan-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.nav-user{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 14px;border-radius:var(--radius-md);background:var(--bg-glass);border:1px solid var(--border-glass)}
+.nav-user img{width:30px;height:30px;border-radius:50%;object-fit:cover;border:2px solid var(--blue-primary)}
+.nav-user span{font-size:0.85rem;color:var(--text-secondary);font-weight:500;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ========= BUTTONS ========= */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:var(--radius-md);
+  font-size:0.9rem;font-weight:600;
+  transition:var(--transition);
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--blue-primary),var(--blue-glow));
+  color:#fff;box-shadow:0 4px 15px rgba(59,130,246,0.3);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(59,130,246,0.45)}
+.btn-ghost{background:var(--bg-glass);color:var(--text-primary);border:1px solid var(--border-glass)}
+.btn-ghost:hover{border-color:var(--border-active);background:rgba(59,130,246,0.1)}
+.btn-danger{background:rgba(239,68,68,0.15);color:var(--danger);border:1px solid rgba(239,68,68,0.3)}
+.btn-danger:hover{background:rgba(239,68,68,0.25)}
+.btn-sm{padding:6px 14px;font-size:0.8rem;border-radius:var(--radius-sm)}
+.btn-icon{
+  width:38px;height:38px;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;background:var(--bg-glass);border:1px solid var(--border-glass);
+  color:var(--text-secondary);font-size:1.1rem;
+}
+.btn-icon:hover{color:var(--blue-bright);border-color:var(--border-active)}
+
+/* ========= INPUTS ========= */
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:0.82rem;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.05em}
+.form-input{
+  padding:12px 16px;border-radius:var(--radius-md);
+  background:var(--bg-input);border:1px solid var(--border-glass);
+  color:var(--text-primary);font-size:0.95rem;
+}
+.form-input:focus{border-color:var(--blue-primary);box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+.form-input::placeholder{color:var(--text-muted)}
+textarea.form-input{resize:vertical;min-height:80px}
+
+/* ========= MODAL ========= */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+  animation:fadeIn 0.25s ease;
+}
+.modal-overlay.active{display:flex}
+.modal{
+  background:var(--bg-secondary);
+  border:1px solid var(--border-glass);
+  border-radius:var(--radius-lg);
+  width:100%;max-width:520px;max-height:90vh;
+  overflow-y:auto;
+  box-shadow:0 25px 60px rgba(0,0,0,0.5),var(--shadow-glow);
+  animation:slideUp 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 24px;border-bottom:1px solid var(--border-glass);
+}
+.modal-header h2{font-size:1.2rem}
+.modal-close{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--bg-glass);border:1px solid var(--border-glass);
+  color:var(--text-secondary);font-size:1.2rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:var(--transition);
+}
+.modal-close:hover{color:var(--danger);border-color:var(--danger)}
+.modal-body{padding:24px;display:flex;flex-direction:column;gap:16px}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--border-glass);display:flex;justify-content:flex-end;gap:10px}
+
+/* ========= MAIN LAYOUT ========= */
+.main{position:relative;z-index:1;padding:24px;max-width:1400px;margin:0 auto}
+
+/* ========= HERO ========= */
+.hero{
+  text-align:center;padding:48px 20px 32px;
+  position:relative;
+}
+.hero h2{
+  font-size:clamp(2rem,5vw,3.2rem);
+  font-weight:900;
+  background:linear-gradient(135deg,#fff,var(--blue-bright),var(--cyan-accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:12px;
+  animation:heroIn 0.8s ease both;
+}
+.hero p{
+  color:var(--text-secondary);font-size:1.05rem;max-width:500px;margin:0 auto 28px;
+  animation:heroIn 0.8s 0.15s ease both;
+}
+.hero-actions{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  animation:heroIn 0.8s 0.3s ease both;
+}
+
+/* ========= GALLERY GRID ========= */
+.gallery-header{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  margin-bottom:20px;
+}
+.gallery-header h3{font-size:1.3rem;color:var(--text-primary)}
+.gallery-filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter-btn{
+  padding:6px 16px;border-radius:20px;font-size:0.82rem;font-weight:600;
+  background:var(--bg-glass);border:1px solid var(--border-glass);
+  color:var(--text-secondary);cursor:pointer;transition:var(--transition);
+}
+.filter-btn:hover,.filter-btn.active{
+  background:rgba(59,130,246,0.15);color:var(--blue-bright);border-color:var(--blue-primary);
+}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
+}
+.gallery-empty{
+  grid-column:1/-1;text-align:center;padding:80px 20px;
+  color:var(--text-muted);
+}
+.gallery-empty svg{width:64px;height:64px;margin-bottom:16px;opacity:0.3}
+.gallery-empty p{font-size:1.1rem}
+
+/* ========= IMAGE CARD ========= */
+.img-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-glass);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  transition:var(--transition);
+  animation:cardIn 0.5s ease both;
+  cursor:pointer;
+}
+.img-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-glow);border-color:var(--border-active)}
+.img-card-thumb{
+  width:100%;height:220px;object-fit:cover;
+  display:block;background:var(--bg-primary);
+}
+.img-card-body{padding:16px}
+.img-card-title{font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.img-card-cat{
+  display:inline-block;padding:3px 10px;border-radius:12px;
+  font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;
+  background:rgba(6,182,212,0.12);color:var(--cyan-accent);
+  border:1px solid rgba(6,182,212,0.2);margin-bottom:8px;
+}
+.img-card-meta{display:flex;align-items:center;gap:14px;color:var(--text-muted);font-size:0.8rem}
+.img-card-meta span{display:flex;align-items:center;gap:4px}
+.img-card-user{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-glass)}
+.img-card-user img{width:24px;height:24px;border-radius:50%;object-fit:cover}
+.img-card-user span{font-size:0.8rem;color:var(--text-secondary)}
+
+/* ========= IMAGE DETAIL ========= */
+.detail-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(12px);
+  display:none;
+  overflow-y:auto;
+  animation:fadeIn 0.3s ease;
+}
+.detail-overlay.active{display:block}
+.detail-container{
+  max-width:1000px;margin:0 auto;padding:20px;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+.detail-back{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--text-secondary);font-size:0.9rem;
+  cursor:pointer;padding:10px 0;margin-bottom:10px;
+  transition:var(--transition);
+}
+.detail-back:hover{color:var(--blue-bright)}
+.detail-img-wrap{
+  border-radius:var(--radius-lg);overflow:hidden;
+  background:var(--bg-secondary);
+  margin-bottom:20px;
+  max-height:65vh;display:flex;align-items:center;justify-content:center;
+}
+.detail-img-wrap img{width:100%;max-height:65vh;object-fit:contain}
+.detail-info{
+  background:var(--bg-card);
+  border:1px solid var(--border-glass);
+  border-radius:var(--radius-lg);
+  padding:24px;margin-bottom:20px;
+}
+.detail-title{font-size:1.5rem;margin-bottom:6px}
+.detail-category{
+  display:inline-block;padding:4px 12px;border-radius:14px;
+  font-size:0.78rem;font-weight:600;text-transform:uppercase;
+  background:rgba(6,182,212,0.12);color:var(--cyan-accent);
+  border:1px solid rgba(6,182,212,0.2);margin-bottom:12px;
+}
+.detail-message{color:var(--text-secondary);font-size:0.95rem;margin-bottom:16px;line-height:1.7}
+.detail-stats{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.detail-stat{display:flex;align-items:center;gap:6px;color:var(--text-muted);font-size:0.88rem}
+.detail-stat strong{color:var(--text-primary)}
+.detail-actions{display:flex;gap:10px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--border-glass)}
+.detail-uploader{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:12px;background:var(--bg-glass);border-radius:var(--radius-md);border:1px solid var(--border-glass)}
+.detail-uploader img{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--blue-primary)}
+.detail-uploader-info span{display:block}
+.detail-uploader-info .name{font-weight:600;font-size:0.95rem}
+.detail-uploader-info .date{font-size:0.78rem;color:var(--text-muted)}
+
+/* ========= RATING ========= */
+.rating-section{
+  background:var(--bg-card);border:1px solid var(--border-glass);
+  border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;
+}
+.rating-section h4{margin-bottom:12px;font-size:1.05rem}
+.stars{display:flex;gap:4px}
+.star{
+  font-size:1.6rem;cursor:pointer;color:var(--star-inactive);
+  transition:var(--transition);user-select:none;
+}
+.star:hover,.star.active{color:var(--star-active)}
+.rating-avg{display:flex;align-items:center;gap:10px;margin-top:10px;color:var(--text-secondary);font-size:0.9rem}
+.rating-avg strong{font-size:1.4rem;color:var(--star-active)}
+
+/* ========= VIEWERS ========= */
+.viewers-section{
+  background:var(--bg-card);border:1px solid var(--border-glass);
+  border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;
+}
+.viewers-section h4{margin-bottom:12px;font-size:1.05rem}
+.viewers-list{display:flex;flex-wrap:wrap;gap:8px}
+.viewer-chip{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:20px;
+  background:var(--bg-glass);border:1px solid var(--border-glass);
+  font-size:0.8rem;color:var(--text-secondary);
+}
+.viewer-chip img{width:20px;height:20px;border-radius:50%;object-fit:cover}
+
+/* ========= COMMENTS ========= */
+.comments-section{
+  background:var(--bg-card);border:1px solid var(--border-glass);
+  border-radius:var(--radius-lg);padding:24px;
+}
+.comments-section h4{margin-bottom:16px;font-size:1.05rem}
+.comment{
+  display:flex;gap:12px;padding:12px 0;
+  border-bottom:1px solid var(--border-glass);
+}
+.comment:last-child{border-bottom:none}
+.comment img{width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.comment-body{flex:1}
+.comment-name{font-weight:600;font-size:0.88rem;margin-bottom:2px}
+.comment-time{font-size:0.75rem;color:var(--text-muted)}
+.comment-text{font-size:0.9rem;color:var(--text-secondary);margin-top:4px}
+.comment-form{display:flex;gap:10px;margin-top:16px}
+.comment-form input{flex:1}
+
+/* ========= PROFILE PAGE ========= */
+.profile-page{display:none;padding:24px}
+.profile-page.active{display:block}
+.profile-header{
+  display:flex;align-items:center;gap:24px;
+  background:var(--bg-card);border:1px solid var(--border-glass);
+  border-radius:var(--radius-lg);padding:28px;margin-bottom:24px;
+  flex-wrap:wrap;
+}
+.profile-avatar-wrap{position:relative}
+.profile-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid var(--blue-primary)}
+.profile-avatar-edit{
+  position:absolute;bottom:2px;right:2px;
+  width:28px;height:28px;border-radius:50%;
+  background:var(--blue-primary);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;cursor:pointer;border:2px solid var(--bg-secondary);
+}
+.profile-info{flex:1}
+.profile-info h3{font-size:1.4rem;margin-bottom:4px}
+.profile-info .profile-id{font-size:0.82rem;color:var(--text-muted);font-family:monospace;cursor:pointer}
+.profile-info .profile-id:hover{color:var(--blue-bright)}
+.profile-info .profile-desc{color:var(--text-secondary);font-size:0.92rem;margin-top:6px}
+.profile-stats-bar{display:flex;gap:24px;margin-top:10px}
+.profile-stat-item{text-align:center}
+.profile-stat-item strong{display:block;font-size:1.2rem;color:var(--text-primary)}
+.profile-stat-item span{font-size:0.78rem;color:var(--text-muted)}
+
+/* ========= AUTH PAGES ========= */
+.auth-container{
+  max-width:420px;margin:80px auto;padding:0 20px;
+  animation:slideUp 0.5s ease;
+}
+.auth-card{
+  background:var(--bg-card);border:1px solid var(--border-glass);
+  border-radius:var(--radius-xl);padding:36px;
+  box-shadow:var(--shadow-card);
+}
+.auth-card h2{text-align:center;margin-bottom:8px;font-size:1.6rem}
+.auth-card .auth-subtitle{text-align:center;color:var(--text-secondary);margin-bottom:28px;font-size:0.92rem}
+.auth-card .auth-logo{display:block;margin:0 auto 20px;width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--blue-primary)}
+.id-display{
+  text-align:center;padding:16px;margin:16px 0;
+  background:var(--bg-input);border-radius:var(--radius-md);
+  border:1px dashed var(--border-active);
+  font-family:monospace;font-size:1.3rem;font-weight:700;
+  color:var(--cyan-accent);letter-spacing:0.1em;
+  user-select:all;
+}
+.auth-divider{
+  display:flex;align-items:center;gap:12px;margin:20px 0;
+  color:var(--text-muted);font-size:0.82rem;
+}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border-glass)}
+
+/* ========= TOAST ========= */
+.toast-container{position:fixed;top:80px;right:20px;z-index:300;display:flex;flex-direction:column;gap:8px}
+.toast{
+  padding:12px 20px;border-radius:var(--radius-md);
+  background:var(--bg-secondary);border:1px solid var(--border-glass);
+  color:var(--text-primary);font-size:0.88rem;
+  box-shadow:0 8px 30px rgba(0,0,0,0.4);
+  animation:slideIn 0.35s ease,fadeOut 0.35s 2.5s ease forwards;
+  display:flex;align-items:center;gap:10px;max-width:360px;
+}
+.toast.success{border-color:var(--success);color:var(--success)}
+.toast.error{border-color:var(--danger);color:var(--danger)}
+.toast.info{border-color:var(--blue-bright);color:var(--blue-bright)}
+
+/* ========= ANIMATIONS ========= */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(100px)}to{opacity:1;transform:translateX(0)}}
+@keyframes heroIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cardIn{from{opacity:0;transform:scale(0.95) translateY(15px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+/* ========= RESPONSIVE ========= */
+@media(max-width:768px){
+  .nav{padding:0 16px}
+  .main{padding:16px}
+  .hero{padding:32px 12px 24px}
+  .hero h2{font-size:1.8rem}
+  .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .img-card-thumb{height:180px}
+  .detail-container{padding:12px}
+  .profile-header{flex-direction:column;text-align:center}
+  .profile-stats-bar{justify-content:center}
+  .modal{max-width:95%}
+  .auth-container{margin:40px auto}
+}
+@media(max-width:480px){
+  .gallery-grid{grid-template-columns:1fr}
+  .nav-user span{display:none}
+  .hero-actions{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-brand">
+    <img src="https://www.image2url.com/r2/default/images/1776661836375-2667b942-f232-4319-8e74-49c037593da5.png" alt="Zero Image">
+    <h1>Zero Image</h1>
+  </div>
+  <div class="nav-actions" id="navActions"></div>
+</nav>
+
+<!-- AUTH: REGISTER -->
+<div class="main" id="pageRegister" style="display:none">
+  <div class="auth-container">
+    <div class="auth-card">
+      <img class="auth-logo" src="https://www.image2url.com/r2/default/images/1776661836375-2667b942-f232-4319-8e74-49c037593da5.png" alt="Logo">
+      <h2>Daftar Akun</h2>
+      <p class="auth-subtitle">Buat akun untuk mulai berbagi gambar</p>
+      <div class="form-group">
+        <label>Nama</label>
+        <input class="form-input" id="regName" placeholder="Masukkan nama kamu" maxlength="30">
+      </div>
+      <div class="form-group" style="margin-top:12px">
+        <label>Deskripsi (opsional)</label>
+        <textarea class="form-input" id="regDesc" placeholder="Tentang kamu..." rows="2" maxlength="150"></textarea>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:20px;justify-content:center" onclick="doRegister()">Buat Akun</button>
+      <div class="auth-divider">sudah punya ID?</div>
+      <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="showPage('pageLogin')">Login dengan ID</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH: LOGIN -->
+<div class="main" id="pageLogin" style="display:none">
+  <div class="auth-container">
+    <div class="auth-card">
+      <img class="auth-logo" src="https://www.image2url.com/r2/default/images/1776661836375-2667b942-f232-4319-8e74-49c037593da5.png" alt="Logo">
+      <h2>Login</h2>
+      <p class="auth-subtitle">Masukkan ID kamu untuk melanjutkan</p>
+      <div class="form-group">
+        <label>ID Akun</label>
+        <input class="form-input" id="loginId" placeholder="ZI-XXXXXX" style="font-family:monospace;font-size:1.1rem;text-align:center;letter-spacing:0.1em">
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:20px;justify-content:center" onclick="doLogin()">Masuk</button>
+      <div class="auth-divider">belum punya akun?</div>
+      <button class="btn btn-ghost" style="width:100%;justify-content:center" onclick="showPage('pageRegister')">Daftar Baru</button>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER SUCCESS -->
+<div class="main" id="pageRegSuccess" style="display:none">
+  <div class="auth-container">
+    <div class="auth-card" style="text-align:center">
+      <div style="font-size:3rem;margin-bottom:12px">🎉</div>
+      <h2>Akun Berhasil Dibuat!</h2>
+      <p class="auth-subtitle">Simpan ID ini baik-baik, kamu butuh ini untuk login</p>
+      <div class="id-display" id="newUserId"></div>
+      <button class="btn btn-ghost btn-sm" style="margin:0 auto 20px" onclick="copyNewId()">📋 Salin ID</button>
+      <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="afterRegister()">Mulai Jelajah →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN GALLERY PAGE -->
+<div class="main" id="pageGallery" style="display:none">
+  <div class="hero">
+    <h2>Zero Image</h2>
+    <p>Koleksi gambar terbaik dari komunitas. Upload, bagikan, dan eksplorasi.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="openUploadModal()">＋ Upload Gambar</button>
+      <button class="btn btn-ghost" onclick="showPage('pageProfile')">👤 Profil Saya</button>
+    </div>
+  </div>
+  <div class="gallery-header">
+    <h3 id="galleryTitle">Semua Gambar</h3>
+    <div class="gallery-filters" id="filterBar"></div>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</div>
+
+<!-- DETAIL VIEW -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-container" id="detailContainer"></div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div class="main profile-page" id="pageProfile">
+  <div id="profileContent"></div>
+</div>
+
+<!-- UPLOAD MODAL -->
+<div class="modal-overlay" id="uploadModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Upload Gambar</h2>
+      <div class="modal-close" onclick="closeUploadModal()">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Sumber Gambar</label>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-sm" id="srcLink" onclick="setSrc('link')" style="flex:1;justify-content:center;background:rgba(59,130,246,0.15);color:var(--blue-bright);border:1px solid var(--blue-primary)">🔗 Link URL</button>
+          <button class="btn btn-sm btn-ghost" id="srcFile" onclick="setSrc('file')" style="flex:1;justify-content:center">📁 Upload File</button>
+        </div>
+      </div>
+      <div class="form-group" id="linkInput">
+        <label>Link Gambar</label>
+        <input class="form-input" id="uploadUrl" placeholder="https://example.com/image.jpg">
+      </div>
+      <div class="form-group" id="fileInput" style="display:none">
+        <label>Pilih File</label>
+        <input type="file" accept="image/*" id="uploadFile" class="form-input" style="padding:10px">
+      </div>
+      <div class="form-group">
+        <label>Nama Gambar</label>
+        <input class="form-input" id="uploadName" placeholder="Beri nama gambar kamu" maxlength="60">
+      </div>
+      <div class="form-group">
+        <label>Kategori</label>
+        <input class="form-input" id="uploadCategory" placeholder="Contoh: Alam, Anime, Kota, dll" maxlength="30">
+      </div>
+      <div class="form-group">
+        <label>Pesan / Deskripsi</label>
+        <textarea class="form-input" id="uploadMessage" placeholder="Tulis pesan atau deskripsi gambar..." rows="3" maxlength="300"></textarea>
+      </div>
+      <div id="uploadPreview" style="display:none;border-radius:var(--radius-md);overflow:hidden;max-height:200px">
+        <img id="previewImg" style="width:100%;max-height:200px;object-fit:contain;background:var(--bg-primary)">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeUploadModal()">Batal</button>
+      <button class="btn btn-primary" onclick="doUpload()">Upload</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div class="modal-overlay" id="editProfileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Edit Profil</h2>
+      <div class="modal-close" onclick="closeModal('editProfileModal')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Foto Profil (URL)</label>
+        <input class="form-input" id="editAvatar" placeholder="https://example.com/avatar.jpg">
+      </div>
+      <div class="form-group">
+        <label>Nama</label>
+        <input class="form-input" id="editName" maxlength="30">
+      </div>
+      <div class="form-group">
+        <label>Deskripsi</label>
+        <textarea class="form-input" id="editDesc" rows="3" maxlength="150"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('editProfileModal')">Batal</button>
+      <button class="btn btn-primary" onclick="saveProfile()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ZERO IMAGE — Single-file Image Gallery with localStorage
+   ============================================================ */
+
+const LOGO = 'https://www.image2url.com/r2/default/images/1776661836375-2667b942-f232-4319-8e74-49c037593da5.png';
+const DEFAULT_AVATAR = LOGO;
+
+/* ---- Storage Helpers ---- */
+function getStore(key, fallback) {
+  try { return JSON.parse(localStorage.getItem('zi_' + key)) || fallback; }
+  catch { return fallback; }
+}
+function setStore(key, val) { localStorage.setItem('zi_' + key, JSON.stringify(val)); }
+
+/* ---- Data ---- */
+let users = getStore('users', {});
+let images = getStore('images', []);
+let currentUser = getStore('currentUser', null);
+let uploadSrc = 'link';
+let activeFilter = 'all';
+
+/* ---- Generate Unique ID ---- */
+function genId() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let id = 'ZI-';
+  for (let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * chars.length)];
+  return users[id] ? genId() : id;
+}
+function genImgId() { return 'img_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7); }
+
+/* ---- Toast ---- */
+function toast(msg, type = 'info') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = msg;
+  document.getElementById('toastContainer').appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+/* ---- Page Router ---- */
+function showPage(id) {
+  ['pageRegister','pageLogin','pageRegSuccess','pageGallery','pageProfile'].forEach(p => {
+    document.getElementById(p).style.display = 'none';
+  });
+  if (id === 'pageProfile') {
+    document.getElementById(id).classList.add('active');
+    document.getElementById(id).style.display = 'block';
+    renderProfile();
+  } else {
+    document.getElementById('pageProfile').classList.remove('active');
+    document.getElementById(id).style.display = 'block';
+  }
+  if (id === 'pageGallery') renderGallery();
+  renderNav();
+}
+
+/* ---- Nav ---- */
+function renderNav() {
+  const nav = document.getElementById('navActions');
+  if (currentUser && users[currentUser]) {
+    const u = users[currentUser];
+    nav.innerHTML = `
+      <button class="btn btn-sm btn-ghost" onclick="showPage('pageGallery')">🏠 Beranda</button>
+      <div class="nav-user" onclick="showPage('pageProfile')">
+        <img src="${u.avatar || DEFAULT_AVATAR}" alt="avatar" onerror="this.src='${DEFAULT_AVATAR}'">
+        <span>${escHtml(u.name)}</span>
+      </div>
+      <button class="btn-icon" onclick="doLogout()" title="Logout">⏻</button>
+    `;
+  } else {
+    nav.innerHTML = `
+      <button class="btn btn-sm btn-ghost" onclick="showPage('pageLogin')">Login</button>
+      <button class="btn btn-sm btn-primary" onclick="showPage('pageRegister')">Daftar</button>
+    `;
+  }
+}
+
+/* ---- Auth ---- */
+function doRegister() {
+  const name = document.getElementById('regName').value.trim();
+  if (!name) return toast('Nama tidak boleh kosong', 'error');
+  const desc = document.getElementById('regDesc').value.trim();
+  const id = genId();
+  users[id] = { name, desc, avatar: '', createdAt: Date.now() };
+  setStore('users', users);
+  currentUser = id;
+  setStore('currentUser', currentUser);
+  document.getElementById('newUserId').textContent = id;
+  showPage('pageRegSuccess');
+}
+function copyNewId() {
+  const id = document.getElementById('newUserId').textContent;
+  navigator.clipboard.writeText(id).then(() => toast('ID disalin!', 'success'));
+}
+function afterRegister() { showPage('pageGallery'); }
+function doLogin() {
+  const id = document.getElementById('loginId').value.trim().toUpperCase();
+  if (!users[id]) return toast('ID tidak ditemukan', 'error');
+  currentUser = id;
+  setStore('currentUser', currentUser);
+  toast('Selamat datang, ' + users[id].name + '!', 'success');
+  showPage('pageGallery');
+}
+function doLogout() {
+  currentUser = null;
+  setStore('currentUser', null);
+  toast('Berhasil logout', 'info');
+  showPage('pageLogin');
+}
+
+/* ---- Upload ---- */
+function setSrc(type) {
+  uploadSrc = type;
+  document.getElementById('linkInput').style.display = type === 'link' ? 'flex' : 'none';
+  document.getElementById('fileInput').style.display = type === 'file' ? 'flex' : 'none';
+  document.getElementById('srcLink').className = type === 'link' ? 'btn btn-sm' : 'btn btn-sm btn-ghost';
+  document.getElementById('srcLink').style.cssText = type === 'link' ? 'flex:1;justify-content:center;background:rgba(59,130,246,0.15);color:var(--blue-bright);border:1px solid var(--blue-primary)' : 'flex:1;justify-content:center';
+  document.getElementById('srcFile').className = type === 'file' ? 'btn btn-sm' : 'btn btn-sm btn-ghost';
+  document.getElementById('srcFile').style.cssText = type === 'file' ? 'flex:1;justify-content:center;background:rgba(59,130,246,0.15);color:var(--blue-bright);border:1px solid var(--blue-primary)' : 'flex:1;justify-content:center';
+}
+function openUploadModal() {
+  if (!currentUser) return toast('Login dulu untuk upload', 'error');
+  document.getElementById('uploadModal').classList.add('active');
+  document.getElementById('uploadUrl').value = '';
+  document.getElementById('uploadFile').value = '';
+  document.getElementById('uploadName').value = '';
+  document.getElementById('uploadCategory').value = '';
+  document.getElementById('uploadMessage').value = '';
+  document.getElementById('uploadPreview').style.display = 'none';
+  setSrc('link');
+}
+function closeUploadModal() { document.getElementById('uploadModal').classList.remove('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+/* Preview on URL input */
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('uploadUrl').addEventListener('input', function() {
+    const url = this.value.trim();
+    if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+      document.getElementById('previewImg').src = url;
+      document.getElementById('uploadPreview').style.display = 'block';
+    } else {
+      document.getElementById('uploadPreview').style.display = 'none';
+    }
+  });
+  document.getElementById('uploadFile').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('previewImg').src = e.target.result;
+        document.getElementById('uploadPreview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+});
+
+function doUpload() {
+  const name = document.getElementById('uploadName').value.trim();
+  const category = document.getElementById('uploadCategory').value.trim();
+  const message = document.getElementById('uploadMessage').value.trim();
+  if (!name) return toast('Nama gambar wajib diisi', 'error');
+  if (!category) return toast('Kategori wajib diisi', 'error');
+
+  const finalize = (imgData, isLink) => {
+    const img = {
+      id: genImgId(),
+      name,
+      category,
+      message,
+      url: isLink ? imgData : null,
+      data: isLink ? null : imgData,
+      userId: currentUser,
+      createdAt: Date.now(),
+      views: [],
+      ratings: {},
+      comments: []
+    };
+    images.unshift(img);
+    setStore('images', images);
+    closeUploadModal();
+    toast('Gambar berhasil diupload!', 'success');
+    renderGallery();
+  };
+
+  if (uploadSrc === 'link') {
+    const url = document.getElementById('uploadUrl').value.trim();
+    if (!url) return toast('Link gambar wajib diisi', 'error');
+    finalize(url, true);
+  } else {
+    const file = document.getElementById('uploadFile').files[0];
+    if (!file) return toast('Pilih file gambar', 'error');
+    if (file.size > 5 * 1024 * 1024) return toast('Ukuran file max 5MB', 'error');
+    const reader = new FileReader();
+    reader.onload = e => finalize(e.target.result, false);
+    reader.readAsDataURL(file);
+  }
+}
+
+/* ---- Gallery ---- */
+function getCategories() {
+  const cats = new Set();
+  images.forEach(i => cats.add(i.category));
+  return [...cats].sort();
+}
+function renderFilters() {
+  const bar = document.getElementById('filterBar');
+  const cats = getCategories();
+  let html = `<button class="filter-btn ${activeFilter==='all'?'active':''}" onclick="setFilter('all')">Semua</button>`;
+  cats.forEach(c => {
+    html += `<button class="filter-btn ${activeFilter===c?'active':''}" onclick="setFilter('${escAttr(c)}')">${escHtml(c)}</button>`;
+  });
+  bar.innerHTML = html;
+}
+function setFilter(cat) {
+  activeFilter = cat;
+  document.getElementById('galleryTitle').textContent = cat === 'all' ? 'Semua Gambar' : cat;
+  renderGallery();
+}
+function renderGallery() {
+  renderFilters();
+  const grid = document.getElementById('galleryGrid');
+  let filtered = activeFilter === 'all' ? images : images.filter(i => i.category === activeFilter);
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="gallery-empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m6 16 3.5-4.5L13 16l3-4 5 5"/></svg>
+      <p>Belum ada gambar. Upload yang pertama!</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map((img, idx) => {
+    const u = users[img.userId] || { name: 'Unknown', avatar: '' };
+    const avgRating = getAvgRating(img);
+    const src = img.url || img.data || '';
+    return `<div class="img-card" onclick="openDetail('${img.id}')" style="animation-delay:${idx*0.06}s">
+      <img class="img-card-thumb" src="${escAttr(src)}" alt="${escAttr(img.name)}" loading="lazy" onerror="this.src='${DEFAULT_AVATAR}'">
+      <div class="img-card-body">
+        <div class="img-card-cat">${escHtml(img.category)}</div>
+        <div class="img-card-title">${escHtml(img.name)}</div>
+        <div class="img-card-meta">
+          <span>👁 ${img.views.length}</span>
+          <span>⭐ ${avgRating.toFixed(1)}</span>
+          <span>💬 ${img.comments.length}</span>
+        </div>
+        <div class="img-card-user">
+          <img src="${u.avatar || DEFAULT_AVATAR}" alt="" onerror="this.src='${DEFAULT_AVATAR}'">
+          <span>${escHtml(u.name)}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---- Detail View ---- */
+function openDetail(imgId) {
+  const img = images.find(i => i.id === imgId);
+  if (!img) return;
+  /* Track view */
+  if (currentUser && !img.views.includes(currentUser)) {
+    img.views.push(currentUser);
+    setStore('images', images);
+  }
+  const overlay = document.getElementById('detailOverlay');
+  overlay.classList.add('active');
+  renderDetail(img);
+}
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('active');
+}
+function getAvgRating(img) {
+  const vals = Object.values(img.ratings);
+  if (vals.length === 0) return 0;
+  return vals.reduce((a, b) => a + b, 0) / vals.length;
+}
+function renderDetail(img) {
+  const u = users[img.userId] || { name: 'Unknown', avatar: '' };
+  const src = img.url || img.data || '';
+  const isOwner = currentUser === img.userId;
+  const myRating = currentUser ? (img.ratings[currentUser] || 0) : 0;
+  const avgRating = getAvgRating(img);
+  const ratingCount = Object.keys(img.ratings).length;
+  const date = new Date(img.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  const container = document.getElementById('detailContainer');
+  container.innerHTML = `
+    <div class="detail-back" onclick="closeDetail()">← Kembali ke galeri</div>
+    <div class="detail-img-wrap">
+      <img src="${escAttr(src)}" alt="${escAttr(img.name)}" onerror="this.src='${DEFAULT_AVATAR}'">
+    </div>
+    <div class="detail-info">
+      <div class="detail-uploader">
+        <img src="${u.avatar || DEFAULT_AVATAR}" alt="" onerror="this.src='${DEFAULT_AVATAR}'">
+        <div class="detail-uploader-info">
+          <span class="name">${escHtml(u.name)}</span>
+          <span class="date">${date}</span>
+        </div>
+      </div>
+      <h3 class="detail-title">${escHtml(img.name)}</h3>
+      <div class="detail-category">${escHtml(img.category)}</div>
+      ${img.message ? `<p class="detail-message">${escHtml(img.message)}</p>` : ''}
+      <div class="detail-stats">
+        <div class="detail-stat">👁 <strong>${img.views.length}</strong> dilihat</div>
+        <div class="detail-stat">⭐ <strong>${avgRating.toFixed(1)}</strong> (${ratingCount} rating)</div>
+        <div class="detail-stat">💬 <strong>${img.comments.length}</strong> komentar</div>
+      </div>
+      <div class="detail-actions">
+        <button class="btn btn-sm btn-ghost" onclick="downloadImg('${img.id}')">⬇ Download</button>
+        ${img.url ? `<button class="btn btn-sm btn-ghost" onclick="copyLink('${escAttr(img.url)}')">🔗 Salin Link</button>` : `<button class="btn btn-sm btn-ghost" onclick="copyDataAsLink('${img.id}')">📋 Salin Gambar</button>`}
+        ${isOwner ? `<button class="btn btn-sm btn-danger" onclick="deleteImg('${img.id}')">🗑 Hapus</button>` : ''}
+      </div>
+    </div>
+
+    <!-- RATING -->
+    <div class="rating-section">
+      <h4>Beri Rating</h4>
+      ${currentUser ? `
+      <div class="stars" id="starsWrap">
+        ${[1,2,3,4,5].map(s => `<span class="star ${s<=myRating?'active':''}" onclick="rateImg('${img.id}',${s})">★</span>`).join('')}
+      </div>` : '<p style="color:var(--text-muted);font-size:0.88rem">Login untuk memberi rating</p>'}
+      <div class="rating-avg">
+        <strong>${avgRating.toFixed(1)}</strong>
+        <span>dari ${ratingCount} pengguna</span>
+      </div>
+    </div>
+
+    <!-- VIEWERS -->
+    <div class="viewers-section">
+      <h4>Dilihat oleh (${img.views.length})</h4>
+      <div class="viewers-list">
+        ${img.views.length === 0 ? '<span style="color:var(--text-muted);font-size:0.85rem">Belum ada yang melihat</span>' :
+          img.views.map(vid => {
+            const vu = users[vid] || { name: vid, avatar: '' };
+            return `<div class="viewer-chip"><img src="${vu.avatar || DEFAULT_AVATAR}" alt="" onerror="this.src='${DEFAULT_AVATAR}'"><span>${escHtml(vu.name)}</span></div>`;
+          }).join('')
+        }
+      </div>
+    </div>
+
+    <!-- COMMENTS -->
+    <div class="comments-section">
+      <h4>Komentar (${img.comments.length})</h4>
+      <div id="commentsList">
+        ${img.comments.length === 0 ? '<p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:12px">Belum ada komentar</p>' :
+          img.comments.map(c => {
+            const cu = users[c.userId] || { name: c.userId, avatar: '' };
+            const ctime = timeAgo(c.createdAt);
+            return `<div class="comment">
+              <img src="${cu.avatar || DEFAULT_AVATAR}" alt="" onerror="this.src='${DEFAULT_AVATAR}'">
+              <div class="comment-body">
+                <span class="comment-name">${escHtml(cu.name)}</span>
+                <span class="comment-time">${ctime}</span>
+                <p class="comment-text">${escHtml(c.text)}</p>
+              </div>
+            </div>`;
+          }).join('')
+        }
+      </div>
+      ${currentUser ? `
+      <div class="comment-form">
+        <input class="form-input" id="commentInput" placeholder="Tulis komentar..." maxlength="200" onkeydown="if(event.key==='Enter')addComment('${img.id}')">
+        <button class="btn btn-sm btn-primary" onclick="addComment('${img.id}')">Kirim</button>
+      </div>` : '<p style="color:var(--text-muted);font-size:0.85rem;margin-top:12px">Login untuk berkomentar</p>'}
+    </div>
+  `;
+}
+
+/* ---- Image Actions ---- */
+function rateImg(imgId, score) {
+  if (!currentUser) return toast('Login dulu', 'error');
+  const img = images.find(i => i.id === imgId);
+  if (!img) return;
+  img.ratings[currentUser] = score;
+  setStore('images', images);
+  renderDetail(img);
+  toast('Rating disimpan!', 'success');
+}
+function addComment(imgId) {
+  if (!currentUser) return toast('Login dulu', 'error');
+  const input = document.getElementById('commentInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const img = images.find(i => i.id === imgId);
+  if (!img) return;
+  img.comments.push({ userId: currentUser, text, createdAt: Date.now() });
+  setStore('images', images);
+  renderDetail(img);
+  toast('Komentar ditambahkan', 'success');
+}
+function downloadImg(imgId) {
+  const img = images.find(i => i.id === imgId);
+  if (!img) return;
+  const src = img.url || img.data;
+  const a = document.createElement('a');
+  a.href = src;
+  a.download = img.name || 'zero-image';
+  a.target = '_blank';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  toast('Download dimulai...', 'info');
+}
+function copyLink(url) {
+  navigator.clipboard.writeText(url).then(() => toast('Link disalin!', 'success')).catch(() => toast('Gagal menyalin', 'error'));
+}
+function copyDataAsLink(imgId) {
+  const img = images.find(i => i.id === imgId);
+  if (!img) return;
+  if (img.data) {
+    navigator.clipboard.writeText(img.data).then(() => toast('Data gambar disalin!', 'success')).catch(() => toast('Gagal menyalin', 'error'));
+  } else {
+    toast('Tidak ada data untuk disalin', 'error');
+  }
+}
+function deleteImg(imgId) {
+  if (!currentUser) return;
+  const img = images.find(i => i.id === imgId);
+  if (!img || img.userId !== currentUser) return toast('Kamu tidak bisa menghapus ini', 'error');
+  if (!confirm('Yakin ingin menghapus gambar ini?')) return;
+  images = images.filter(i => i.id !== imgId);
+  setStore('images', images);
+  closeDetail();
+  renderGallery();
+  toast('Gambar dihapus', 'success');
+}
+
+/* ---- Profile ---- */
+function renderProfile() {
+  if (!currentUser || !users[currentUser]) return showPage('pageLogin');
+  const u = users[currentUser];
+  const myImages = images.filter(i => i.userId === currentUser);
+  const totalViews = myImages.reduce((a, i) => a + i.views.length, 0);
+  const totalComments = myImages.reduce((a, i) => a + i.comments.length, 0);
+
+  const content = document.getElementById('profileContent');
+  content.innerHTML = `
+    <div class="detail-back" onclick="showPage('pageGallery')">← Kembali ke beranda</div>
+    <div class="profile-header">
+      <div class="profile-avatar-wrap">
+        <img class="profile-avatar" src="${u.avatar || DEFAULT_AVATAR}" alt="" onerror="this.src='${DEFAULT_AVATAR}'">
+        <div class="profile-avatar-edit" onclick="openEditProfile()">✎</div>
+      </div>
+      <div class="profile-info">
+        <h3>${escHtml(u.name)}</h3>
+        <div class="profile-id" onclick="copyMyId()" title="Klik untuk salin ID">🔑 ${currentUser}</div>
+        ${u.desc ? `<p class="profile-desc">${escHtml(u.desc)}</p>` : ''}
+        <div class="profile-stats-bar">
+          <div class="profile-stat-item"><strong>${myImages.length}</strong><span>Gambar</span></div>
+          <div class="profile-stat-item"><strong>${totalViews}</strong><span>Dilihat</span></div>
+          <div class="profile-stat-item"><strong>${totalComments}</strong><span>Komentar</span></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-ghost" onclick="openEditProfile()">✎ Edit Profil</button>
+        <button class="btn btn-sm btn-ghost" onclick="copyMyId()">📋 Salin ID</button>
+      </div>
+    </div>
+    <h3 style="margin-bottom:16px">Gambar Saya (${myImages.length})</h3>
+    <div class="gallery-grid">
+      ${myImages.length === 0 ? '<div class="gallery-empty"><p>Kamu belum upload gambar</p></div>' :
+        myImages.map((img, idx) => {
+          const src = img.url || img.data || '';
+          const avgRating = getAvgRating(img);
+          return `<div class="img-card" onclick="openDetail('${img.id}')" style="animation-delay:${idx*0.06}s">
+            <img class="img-card-thumb" src="${escAttr(src)}" alt="${escAttr(img.name)}" loading="lazy" onerror="this.src='${DEFAULT_AVATAR}'">
+            <div class="img-card-body">
+              <div class="img-card-cat">${escHtml(img.category)}</div>
+              <div class="img-card-title">${escHtml(img.name)}</div>
+              <div class="img-card-meta">
+                <span>👁 ${img.views.length}</span>
+                <span>⭐ ${avgRating.toFixed(1)}</span>
+                <span>💬 ${img.comments.length}</span>
+              </div>
+            </div>
+          </div>`;
+        }).join('')
+      }
+    </div>
+  `;
+}
+function copyMyId() {
+  navigator.clipboard.writeText(currentUser).then(() => toast('ID disalin: ' + currentUser, 'success'));
+}
+function openEditProfile() {
+  const u = users[currentUser];
+  document.getElementById('editAvatar').value = u.avatar || '';
+  document.getElementById('editName').value = u.name;
+  document.getElementById('editDesc').value = u.desc || '';
+  document.getElementById('editProfileModal').classList.add('active');
+}
+function saveProfile() {
+  const name = document.getElementById('editName').value.trim();
+  if (!name) return toast('Nama tidak boleh kosong', 'error');
+  users[currentUser].name = name;
+  users[currentUser].avatar = document.getElementById('editAvatar').value.trim();
+  users[currentUser].desc = document.getElementById('editDesc').value.trim();
+  setStore('users', users);
+  closeModal('editProfileModal');
+  renderProfile();
+  renderNav();
+  toast('Profil diperbarui!', 'success');
+}
+
+/* ---- Helpers ---- */
+function escHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+function escAttr(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'baru saja';
+  if (m < 60) return m + ' menit lalu';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + ' jam lalu';
+  const d = Math.floor(h / 24);
+  if (d < 30) return d + ' hari lalu';
+  return new Date(ts).toLocaleDateString('id-ID');
+}
+
+/* ---- Init ---- */
+function init() {
+  if (currentUser && users[currentUser]) {
+    showPage('pageGallery');
+  } else {
+    currentUser = null;
+    setStore('currentUser', null);
+    showPage('pageRegister');
+  }
+}
+init();
+</script>
+</body>
+</html>
